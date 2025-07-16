@@ -125,7 +125,6 @@
         .label {
             width: 2in;
             height: 1.25in;
-            border: 1px solid #000;
             position: relative;
             background: white;
             display: inline-flex;
@@ -133,7 +132,7 @@
             justify-content: space-between;
             padding: 0.1in;
             box-sizing: border-box;
-            overflow: hidden;
+            overflow: visible;
             margin: 0 auto;
         }
 
@@ -162,20 +161,19 @@
         .cents {
             font-size: 18pt;
             font-weight: bold;
-            position: relative;
-            top: -0.15in;
             line-height: 1;
+            margin-left: 2px;
         }
 
         .item-name {
             text-align: center;
-            font-size: 12pt;
+            font-size: 11pt;
             font-weight: bold;
             text-transform: uppercase;
-            line-height: 1.2;
-            max-height: 0.3in;
+            line-height: 1.1;
             overflow: hidden;
             padding: 0 0.05in;
+            word-wrap: break-word;
         }
 
         .multi-label-container {
