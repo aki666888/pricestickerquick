@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Sticker Quick</title>
+    <style>
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .label {
+                page-break-after: always;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .no-print {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+
+        .btn-secondary {
+            background-color: #008CBA;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #007399;
+        }
+
+        .preview-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .preview-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        /* Label styles - exact size for printing */
+        .label {
+            width: 2in;
+            height: 1.25in;
+            border: 1px solid #000;
+            position: relative;
+            background: white;
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 0.1in;
+            box-sizing: border-box;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .price-container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            flex-grow: 1;
+            position: relative;
+            padding-top: 0.15in;
+        }
+
+        .dollar-sign {
+            font-size: 24pt;
+            font-weight: bold;
+            line-height: 1;
+            margin-right: 2px;
+        }
+
+        .main-price {
+            font-size: 36pt;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .cents {
+            font-size: 18pt;
+            font-weight: bold;
+            position: relative;
+            top: -0.15in;
+            line-height: 1;
+        }
+
+        .item-name {
+            text-align: center;
+            font-size: 12pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            line-height: 1.2;
+            max-height: 0.3in;
+            overflow: hidden;
+            padding: 0 0.05in;
+        }
+
+        .multi-label-container {
+            display: none;
+        }
+
+        @media print {
+            .multi-label-container {
+                display: block;
+            }
+            .preview-container {
+                display: none;
+            }
+            .label {
+                position: relative;
+            }
+        }
+
+        .info {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        details {
+            margin-bottom: 20px;
+        }
+        
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #555;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        
+        details > div {
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        
+        small {
+            color: #666;
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container no-print">
+        <h1>Price Sticker Quick</h1>
+        
+        <div class="form-group">
+            <label for="price">Price ($):</label>
+            <input type="text" id="price" placeholder="14.99" value="14.99" autofocus>
+        </div>
+        
+        <div class="form-group">
+            <label for="itemName">Item Name:</label>
+            <input type="text" id="itemName" placeholder="PRODUCT NAME" value="PRODUCT NAME" maxlength="30">
+        </div>
+        
+        <div class="form-group">
+            <label for="quantity">Number of Labels:</label>
+            <input type="number" id="quantity" min="1" value="1">
+        </div>
+        
+        <details>
+            <summary>Advanced Settings (Click to expand)</summary>
+            <div>
+                <div class="form-group">
+                    <label for="offsetX">Horizontal Offset (inches):</label>
+                    <input type="number" id="offsetX" value="0" step="0.05" min="-1" max="1" style="width: 150px;">
+                    <small>Adjust left (-) or right (+)</small>
+                </div>
+                <div class="form-group">
+                    <label for="offsetY">Vertical Offset (inches):</label>
+                    <input type="number" id="offsetY" value="0" step="0.05" min="-1" max="1" style="width: 150px;">
+                    <small>Adjust up (-) or down (+)</small>
+                </div>
+                <button class="btn-primary" onclick="resetOffsets()" style="width: auto; padding: 8px 16px; font-size: 14px;">Reset Offsets</button>
+            </div>
+        </details>
+        
+        <div class="button-group">
+            <button class="btn-primary" onclick="updatePreview()">Update Preview</button>
+            <button class="btn-secondary" onclick="printLabels()">Print Labels (Ctrl+P)</button>
+        </div>
+        
+        <div class="preview-container">
+            <div class="preview-title">Preview:</div>
+            <div class="label" id="previewLabel">
+                <div class="price-container">
+                    <span class="dollar-sign">$</span>
+                    <span class="main-price">14</span>
+                    <span class="cents">99</span>
+                </div>
+                <div class="item-name">PRODUCT NAME</div>
+            </div>
+        </div>
+        
+        <div class="info">
+            Label Size: 2" × 1.25" | For Zebra Direct Thermal Printers
+        </div>
+    </div>
+
+    <div class="multi-label-container" id="printContainer"></div>
+
+    <script>
+        // Save settings to localStorage
+        function saveSettings() {
+            const settings = {
+                price: document.getElementById('price').value,
+                itemName: document.getElementById('itemName').value,
+                offsetX: document.getElementById('offsetX').value,
+                offsetY: document.getElementById('offsetY').value
+            };
+            localStorage.setItem('priceStickerSettings', JSON.stringify(settings));
+        }
+
+        // Load settings from localStorage
+        function loadSettings() {
+            const saved = localStorage.getItem('priceStickerSettings');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                document.getElementById('price').value = settings.price || '14.99';
+                document.getElementById('itemName').value = settings.itemName || 'PRODUCT NAME';
+                document.getElementById('offsetX').value = settings.offsetX || '0';
+                document.getElementById('offsetY').value = settings.offsetY || '0';
+            }
+        }
+
+        function formatPrice(priceStr) {
+            // Remove $ sign if present and parse
+            const price = parseFloat(priceStr.replace('$', ''));
+            if (isNaN(price)) return { main: '0', cents: '00' };
+            
+            const parts = price.toFixed(2).split('.');
+            return {
+                main: parts[0],
+                cents: parts[1]
+            };
+        }
+
+        function updatePreview() {
+            const priceInput = document.getElementById('price').value;
+            const itemName = document.getElementById('itemName').value;
+            const price = formatPrice(priceInput);
+            
+            const previewLabel = document.getElementById('previewLabel');
+            previewLabel.innerHTML = `
+                <div class="price-container">
+                    <span class="dollar-sign">$</span>
+                    <span class="main-price">${price.main}</span>
+                    <span class="cents">${price.cents}</span>
+                </div>
+                <div class="item-name">${itemName.toUpperCase()}</div>
+            `;
+            
+            saveSettings();
+        }
+
+        function printLabels() {
+            const priceInput = document.getElementById('price').value;
+            const itemName = document.getElementById('itemName').value;
+            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+            const offsetX = parseFloat(document.getElementById('offsetX').value) || 0;
+            const offsetY = parseFloat(document.getElementById('offsetY').value) || 0;
+            const price = formatPrice(priceInput);
+            
+            const printContainer = document.getElementById('printContainer');
+            printContainer.innerHTML = '';
+            
+            for (let i = 0; i < quantity; i++) {
+                const label = document.createElement('div');
+                label.className = 'label';
+                label.style.left = `${offsetX}in`;
+                label.style.top = `${offsetY}in`;
+                label.innerHTML = `
+                    <div class="price-container">
+                        <span class="dollar-sign">$</span>
+                        <span class="main-price">${price.main}</span>
+                        <span class="cents">${price.cents}</span>
+                    </div>
+                    <div class="item-name">${itemName.toUpperCase()}</div>
+                `;
+                printContainer.appendChild(label);
+            }
+            
+            saveSettings();
+            window.print();
+        }
+        
+        function resetOffsets() {
+            document.getElementById('offsetX').value = 0;
+            document.getElementById('offsetY').value = 0;
+            updatePreview();
+        }
+
+        // Load settings on page load
+        loadSettings();
+        updatePreview();
+
+        // Update preview on Enter key
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                updatePreview();
+            }
+        });
+        
+        // Save settings on change
+        document.getElementById('price').addEventListener('change', saveSettings);
+        document.getElementById('itemName').addEventListener('change', saveSettings);
+        document.getElementById('offsetX').addEventListener('change', saveSettings);
+        document.getElementById('offsetY').addEventListener('change', saveSettings);
+    </script>
+</body>
+</html>
