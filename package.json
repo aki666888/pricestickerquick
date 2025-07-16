@@ -21,12 +21,24 @@
       "output": "dist"
     },
     "win": {
-      "target": "nsis",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        },
+        {
+          "target": "portable"
+        }
+      ],
       "icon": "icon.ico"
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": true
+    },
+    "portable": {
+      "artifactName": "PriceStickerQuick-Portable.exe"
     }
   }
 }
